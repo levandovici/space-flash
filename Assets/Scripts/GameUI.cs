@@ -127,6 +127,11 @@ public class GameUI : MonoBehaviour
     private Button _select_drive_3;
 
 
+    [Header("Privacy Policy")]
+    [SerializeField]
+    private Button _privacy_policy;
+
+
 
     public event Action OnBuyClicked;
     public event Action OnSelectClicked;
@@ -137,6 +142,8 @@ public class GameUI : MonoBehaviour
     public event Action OnSetiingsClicked;
     public event Action OnCloseSettingsClicked;
     public event Action OnPauseClicked;
+
+    public event Action OnPrivacyPolicyClicked;
 
     public event Action<int> OnDriveModeChanged;
 
@@ -158,6 +165,8 @@ public class GameUI : MonoBehaviour
         _openSettings.onClick.AddListener(() => OnSetiingsClicked.Invoke());
         _closeSettings.onClick.AddListener(() => OnCloseSettingsClicked.Invoke());
         _pause.onClick.AddListener(() => OnPauseClicked.Invoke());
+
+        _privacy_policy.onClick.AddListener(() => OnPrivacyPolicyClicked.Invoke());
 
         _select_drive_1.onClick.AddListener(() => OnDriveModeChanged.Invoke(0));
         _select_drive_2.onClick.AddListener(() => OnDriveModeChanged.Invoke(1));
@@ -190,6 +199,8 @@ public class GameUI : MonoBehaviour
         _openSettings.onClick.RemoveAllListeners();
         _closeSettings.onClick.RemoveAllListeners();
         _pause.onClick.RemoveAllListeners();
+
+        _privacy_policy.onClick.RemoveAllListeners();
 
         for (int i = 0; i < 3; i++)
         {

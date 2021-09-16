@@ -1,45 +1,45 @@
-//using UnityEngine.Advertisements;
-//using UnityEngine.UI;
-//using UnityEngine;
-//using System;
+using UnityEngine.Advertisements;
+using UnityEngine.UI;
+using UnityEngine;
+using System;
 
-//public class RewardedAdButton : MonoBehaviour
-//{
-//    [SerializeField]
-//    private Button _showAdButton;
+public class RewardedAdButton : MonoBehaviour
+{
+    [SerializeField]
+    private Button _showAdButton;
 
-//    [SerializeField]
-//    private AdsManager.EReward _reward = AdsManager.EReward.coins_5000;
-
-
-
-//    public event Action<AdsManager.EReward> OnShowAd;
+    [SerializeField]
+    private AdsManager.EReward _reward = AdsManager.EReward.coins_5000;
 
 
 
-//    public bool CanShowAd
-//    {
-//        set
-//        {
-//            _showAdButton.gameObject.SetActive(value);
-
-//            _showAdButton.interactable = value;
-//        }
-//    }
+    public event Action<AdsManager.EReward> OnShowAd;
 
 
 
-//    void Awake()
-//    {
-//        CanShowAd = false;
+    public bool CanShowAd
+    {
+        set
+        {
+            _showAdButton.gameObject.SetActive(value);
 
-//        _showAdButton.onClick.AddListener(() => OnShowAd.Invoke(_reward));
-//    }
+            _showAdButton.interactable = value;
+        }
+    }
 
 
 
-//    void OnDestroy()
-//    {
-//        _showAdButton.onClick.RemoveAllListeners();
-//    }
-//}
+    void Awake()
+    {
+        CanShowAd = false;
+
+        _showAdButton.onClick.AddListener(() => OnShowAd.Invoke(_reward));
+    }
+
+
+
+    void OnDestroy()
+    {
+        _showAdButton.onClick.RemoveAllListeners();
+    }
+}

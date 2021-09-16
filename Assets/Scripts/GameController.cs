@@ -75,15 +75,15 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Vector2 _rotation_speed = new Vector2(-4.5f, 4.5f);
 
-//    [Header("Monetization")]
-    //[SerializeField]
-   // private AdsManager _ads_manager;
+    [Header("Monetization")]
+    [SerializeField]
+    private AdsManager _ads_manager;
 
-   // [SerializeField]
-   // private RewardedAdButton _coins_reward;
+    [SerializeField]
+    private RewardedAdButton _coins_reward;
 
-   // [SerializeField]
-    //private RewardedAdButton _continue_reward;
+    [SerializeField]
+    private RewardedAdButton _continue_reward;
 
 
 
@@ -218,37 +218,45 @@ public class GameController : MonoBehaviour
 
         };
 
+        _gameUI.OnPrivacyPolicyClicked += () =>
+        {
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+            Application.OpenURL("https://limonado-entertainment.jimdosite.com/spaceflash.privacypolicy/");
+        };
 
 
-        //_ads_manager.OnCanShowAdChanged += (b) => _coins_reward.CanShowAd = b;
-
-        //_ads_manager.OnCanShowAdChanged += (b) => _continue_reward.CanShowAd = b;
 
 
-        //_coins_reward.OnShowAd += (reward) =>
-        //{
-        //    _ads_manager.ShowAd(reward);
-        //};
+        _ads_manager.OnCanShowAdChanged += (b) => _coins_reward.CanShowAd = b;
 
-        //_continue_reward.OnShowAd += (reward) =>
-        //{
-        //    _ads_manager.ShowAd(reward);
-        //};
+        _ads_manager.OnCanShowAdChanged += (b) => _continue_reward.CanShowAd = b;
 
 
-        //_ads_manager.OnReward += (reward) =>
-        //{
-        //    if (reward == AdsManager.EReward.coins_5000)
-        //    {
-        //        ChangeCoins(5000);
+        _coins_reward.OnShowAd += (reward) =>
+        {
+            _ads_manager.ShowAd(reward);
+        };
 
-        //        SaveLoadManager.Save();
-        //    }
-        //    else if (reward == AdsManager.EReward.continue_game)
-        //    {
-        //        StartGame(_score);
-        //    }
-        //};
+        _continue_reward.OnShowAd += (reward) =>
+        {
+            _ads_manager.ShowAd(reward);
+        };
+
+
+        _ads_manager.OnReward += (reward) =>
+        {
+            if (reward == AdsManager.EReward.coins_5000)
+            {
+                ChangeCoins(5000);
+
+                SaveLoadManager.Save();
+            }
+            else if (reward == AdsManager.EReward.continue_game)
+            {
+                StartGame(_score);
+            }
+        };
     }
 
 
@@ -277,14 +285,184 @@ public class GameController : MonoBehaviour
 
 
 
-       // _ads_manager.InitializeAds();
+        _ads_manager.InitializeAds();
 
-       //_ads_manager.IsAdsEnabled = (System.DateTime.Now.Year - SaveLoadManager.CurrentData.year_of_age_setup + SaveLoadManager.CurrentData.age - 1) >= 13;
+        _ads_manager.IsAdsEnabled = true;
+
+        //Set Up this after adding Family Policy and auditory 0->13
+        //_ads_manager.IsAdsEnabled = (System.DateTime.Now.Year - SaveLoadManager.CurrentData.year_of_age_setup + SaveLoadManager.CurrentData.age - 1) >= 13;
     }
 
     private void OnDestroy()
     {
+        _gameUI.OnLeftClicked -= () =>
+        {
+            _rocketID--;
 
+            if (_rocketID < 0)
+            {
+                _rocketID = PlayerData.RocketsCount() - 1;
+            }
+
+            SetRocket();
+
+            _soundController.PlaySfx(SoundController.ESfx.click);
+        };
+
+        _gameUI.OnRightClicked -= () =>
+        {
+            _rocketID++;
+
+            if (_rocketID >= PlayerData.RocketsCount())
+            {
+                _rocketID = 0;
+            }
+
+            SetRocket();
+
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnBuyClicked -= () =>
+        {
+            PlayerData data = SaveLoadManager.CurrentData;
+
+            if (!data.rockets[_rocketID] && data.coins >= PlayerData.RocketsPrice()[_rocketID])
+            {
+                ChangeCoins(-PlayerData.RocketsPrice()[_rocketID]);
+                data.rockets[_rocketID] = true;
+
+                SaveLoadManager.Save();
+            }
+
+            _selectedRocketID = _rocketID;
+            SetRocket();
+
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnSelectClicked -= () =>
+        {
+            if (SaveLoadManager.CurrentData.rockets[_rocketID])
+            {
+                SaveLoadManager.CurrentData.selectedRocketID = _selectedRocketID = _rocketID;
+                SetRocket();
+            }
+
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnPlayClicked -= () =>
+        {
+            if (!_isStarted)
+                StartGame();
+
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnNextClicked -= () =>
+        {
+            _gameUI.OpenMain();
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnSetiingsClicked -= () =>
+        {
+            _gameUI.OpenSettings();
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnCloseSettingsClicked -= () =>
+        {
+            _gameUI.OpenMain();
+            SaveLoadManager.Save();
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnPauseClicked -= () =>
+        {
+            if (_pause)
+            {
+                _pause = false;
+                _soundController.Mute(false);
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                _pause = true;
+                _soundController.Mute(true);
+                Time.timeScale = 0f;
+            }
+
+            _gameUI.SetPause(_pause);
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnSfxVolumeChanged -= (f) =>
+        {
+            ChangeSfxVolume(f);
+        };
+
+        _gameUI.OnMusicVolumeChanged -= (f) =>
+        {
+            ChangeMusicVolume(f);
+        };
+
+        _gameUI.OnDriveModeChanged -= (i) =>
+        {
+            _gameUI.SetDriveMode(i);
+            SaveLoadManager.CurrentData.SelectedDriveID = i;
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+        };
+
+        _gameUI.OnPrivacyPolicyClicked -= () =>
+        {
+            _soundController.PlaySfx(SoundController.ESfx.click);
+
+            Application.OpenURL("https://limonado-entertainment.jimdosite.com/spaceflash.privacypolicy/");
+        };
+
+
+
+
+        _ads_manager.OnCanShowAdChanged -= (b) => _coins_reward.CanShowAd = b;
+
+        _ads_manager.OnCanShowAdChanged -= (b) => _continue_reward.CanShowAd = b;
+
+
+        _coins_reward.OnShowAd -= (reward) =>
+        {
+            _ads_manager.ShowAd(reward);
+        };
+
+        _continue_reward.OnShowAd -= (reward) =>
+        {
+            _ads_manager.ShowAd(reward);
+        };
+
+
+        _ads_manager.OnReward -= (reward) =>
+        {
+            if (reward == AdsManager.EReward.coins_5000)
+            {
+                ChangeCoins(5000);
+
+                SaveLoadManager.Save();
+            }
+            else if (reward == AdsManager.EReward.continue_game)
+            {
+                StartGame(_score);
+            }
+        };
     }
 
     private void Update()
