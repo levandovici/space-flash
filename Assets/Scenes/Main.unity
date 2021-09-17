@@ -7753,7 +7753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 4294259
   _iOsGameId: 4294258
-  _testMode: 1
+  _testMode: 0
   _enablePerPlacementMode: 1
   _androidAdUnitId: Rewarded_Android
   _iOsAdUnitId: Rewarded_iOS
