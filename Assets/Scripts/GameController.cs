@@ -861,7 +861,7 @@ public class GameController : MonoBehaviour
 
         gold += _score * 10;
 
-        _gameUI.OpenOver(false);//_ads_manager.CanShowAd);
+        _gameUI.OpenOver(_ads_manager.CanShowAd);
 
 
         _gameUI.SetOver(_score, SaveLoadManager.CurrentData.bestScore, gold, _collectedGold);
