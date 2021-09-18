@@ -36,7 +36,6 @@ public class Loading : MonoBehaviour
 
         while(operation.progress < 1f)
         {
-            Debug.Log(operation.progress);
             yield return null;
         }
     }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 public static class SaveLoadManager
 {
@@ -37,6 +40,14 @@ public static class SaveLoadManager
     public static void Save()
     {
         File.WriteAllText(_Path, Encript(CurrentData));
+    }
+
+    public async static void SaveAsync()
+    {
+        using (StreamWriter writer = File.CreateText(_Path))
+        {
+            await writer.WriteAsync(Encript(CurrentData));
+        }
     }
 
     public static void Load()

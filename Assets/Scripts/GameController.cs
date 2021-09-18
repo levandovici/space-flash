@@ -57,11 +57,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private SpaceShip _spaceShipPrefab;
 
-    private bool _isExtraCoinCollected = false;
     [SerializeField]
     private float _timeRemainsToFindShip = 0f;
-
-    private float _lastDeleteTime = 0f;
 
     [Header("Planets Balance")]
     [SerializeField]
@@ -128,7 +125,7 @@ public class GameController : MonoBehaviour
                 ChangeCoins(-PlayerData.RocketsPrice()[_rocketID]);
                 data.rockets[_rocketID] = true;
 
-                SaveLoadManager.Save();
+               SaveLoadManager.SaveAsync();
             }
 
             _selectedRocketID = _rocketID;
@@ -176,7 +173,7 @@ public class GameController : MonoBehaviour
         _gameUI.OnCloseSettingsClicked += () =>
         {
             _gameUI.OpenMain();
-            SaveLoadManager.Save();
+            SaveLoadManager.SaveAsync();
             _soundController.PlaySfx(SoundController.ESfx.click);
 
         };
@@ -251,7 +248,7 @@ public class GameController : MonoBehaviour
             {
                 ChangeCoins(5000);
 
-                SaveLoadManager.Save();
+                SaveLoadManager.SaveAsync();
             }
             else if (reward == AdsManager.EReward.continue_game)
             {
@@ -334,7 +331,7 @@ public class GameController : MonoBehaviour
                 ChangeCoins(-PlayerData.RocketsPrice()[_rocketID]);
                 data.rockets[_rocketID] = true;
 
-                SaveLoadManager.Save();
+                SaveLoadManager.SaveAsync();
             }
 
             _selectedRocketID = _rocketID;
@@ -382,7 +379,7 @@ public class GameController : MonoBehaviour
         _gameUI.OnCloseSettingsClicked -= () =>
         {
             _gameUI.OpenMain();
-            SaveLoadManager.Save();
+            SaveLoadManager.SaveAsync();
             _soundController.PlaySfx(SoundController.ESfx.click);
 
         };
@@ -457,7 +454,7 @@ public class GameController : MonoBehaviour
             {
                 ChangeCoins(5000);
 
-                SaveLoadManager.Save();
+                SaveLoadManager.SaveAsync();
             }
             else if (reward == AdsManager.EReward.continue_game)
             {
@@ -667,7 +664,7 @@ public class GameController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SaveLoadManager.Save();
+        SaveLoadManager.SaveAsync();
     }
 
     //private void OnApplicationPause(bool pause)
@@ -808,7 +805,6 @@ public class GameController : MonoBehaviour
 
     private void CreateSpaceShip()
     {
-        _isExtraCoinCollected = true;
         _timeRemainsToFindShip = 6f;
 
         if(_spaceShip == null)
@@ -837,7 +833,6 @@ public class GameController : MonoBehaviour
 
     private void DeleteSpaceShip()
     {
-        _isExtraCoinCollected = false;
         _timeRemainsToFindShip = 0f;
 
         if(_spaceShip != null && !_spaceShip.IsPlayerFound)
@@ -883,7 +878,7 @@ public class GameController : MonoBehaviour
         _soundController.SetMusic(SoundController.EMusicType.main);
 
 
-        SaveLoadManager.Save();
+        SaveLoadManager.SaveAsync();
     }
 
     private IEnumerator Over()
