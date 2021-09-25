@@ -225,10 +225,10 @@ public class GameController : MonoBehaviour
 
 
 
-
         _ads_manager.OnCanShowAdChanged += (b) => _coins_reward.CanShowAd = b;
 
         _ads_manager.OnCanShowAdChanged += (b) => _continue_reward.CanShowAd = b;
+
 
 
         _coins_reward.OnShowAd += (reward) =>
@@ -240,6 +240,7 @@ public class GameController : MonoBehaviour
         {
             _ads_manager.ShowAd(reward);
         };
+
 
 
         _ads_manager.OnReward += (reward) =>
@@ -255,6 +256,14 @@ public class GameController : MonoBehaviour
                 StartGame(_score);
             }
         };
+
+
+        _ads_manager.IsAdsEnabled = true;
+
+        _ads_manager.InitializeAds();
+
+        //Set Up this after adding Family Policy and auditory 0->13
+        //_ads_manager.IsAdsEnabled = (System.DateTime.Now.Year - SaveLoadManager.CurrentData.year_of_age_setup + SaveLoadManager.CurrentData.age - 1) >= 13;
     }
 
 
@@ -280,15 +289,6 @@ public class GameController : MonoBehaviour
         ChangeCoins(0);
         _gameUI.SetDriveMode(SaveLoadManager.CurrentData.SelectedDriveID);
         _gameUI.SetScore(SaveLoadManager.CurrentData.bestScore);
-
-
-
-        _ads_manager.InitializeAds();
-
-        _ads_manager.IsAdsEnabled = true;
-
-        //Set Up this after adding Family Policy and auditory 0->13
-        //_ads_manager.IsAdsEnabled = (System.DateTime.Now.Year - SaveLoadManager.CurrentData.year_of_age_setup + SaveLoadManager.CurrentData.age - 1) >= 13;
     }
 
     private void OnDestroy()
@@ -765,9 +765,6 @@ public class GameController : MonoBehaviour
         SetScore(score);
         _collectedGold = collected_gold;
         _gameUI.OpenGame();
-
-
-        Debug.Log(_selectedRocketID);
 
        _player = Instantiate(_rocketsPrefab[_selectedRocketID], new Vector3(0f, -1f, 0f),
             Quaternion.identity, _gameObjects.transform);

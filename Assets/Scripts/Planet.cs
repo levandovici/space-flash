@@ -122,8 +122,6 @@ public class Planet : MonoBehaviour
 
             if (id >= arr.Length)
                 id = 0;
-
-            Debug.Log($"Right: {id}");
         }
         else
         {
@@ -131,8 +129,6 @@ public class Planet : MonoBehaviour
 
             if (id < 0)
                 id = arr.Length - 1;
-
-            Debug.Log($"Left: {id}");
         }
 
         return arr[id];

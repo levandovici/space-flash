@@ -10,9 +10,9 @@ using System;
 public static class SaveLoadManager
 {
 #if UNITY_EDITOR
-    private static string _Path = Path.Combine(Application.dataPath, "Data");
+    private static string _Path = Path.Combine(Application.dataPath, "space-flash.data");
 #else
-    private static string _Path = Path.Combine(Application.persistentDataPath, "Data");
+    private static string _Path = Path.Combine(Application.persistentDataPath, "space-flash.data");
 #endif
 
 
@@ -68,14 +68,12 @@ public static class SaveLoadManager
     {
         SaveData saveData = new SaveData(data);
 
-
         return JsonUtility.ToJson(saveData);
     }
 
     private static PlayerData Decript(string data)
     {
         SaveData saveData = JsonUtility.FromJson<SaveData>(data);
-
 
         return saveData.PlayerData();
     }

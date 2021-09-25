@@ -59,18 +59,6 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener, IUnity
 
 
 
-    void Awake()
-    {
-        OnIsAdLoadedChanged += (b) =>
-        {
-            _is_ad_loaded = b;
-
-            OnCanShowAdChanged(CanShowAd);
-        };
-    }
-
-
-
     public void InitializeAds()
     {
         _gameId = (Application.platform == RuntimePlatform.IPhonePlayer) ? _iOsGameId : _androidGameId;
@@ -78,6 +66,14 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener, IUnity
         Advertisement.Initialize(_gameId, _testMode, _enablePerPlacementMode, this);
 
         _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer) ? _iOsAdUnitId : _androidAdUnitId;
+
+
+        OnIsAdLoadedChanged += (b) =>
+        {
+            _is_ad_loaded = b;
+
+            OnCanShowAdChanged(CanShowAd);
+        };
     }
 
 
