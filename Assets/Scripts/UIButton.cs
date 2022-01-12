@@ -17,9 +17,16 @@ public class UIButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
 
 
-    public void Awake()
+    private void Awake()
     {
         _button = GetComponent<Button>();
+    }
+
+    private void OnDestroy()
+    {
+        OnMouseDown = null;
+
+        OnMouseUp = null;
     }
 
 

@@ -18,6 +18,7 @@ public static class SaveLoadManager
 
 
     private static PlayerData _currentData = null;
+
     private static bool _isNewPlayerData = false;
 
 
@@ -40,14 +41,6 @@ public static class SaveLoadManager
     public static void Save()
     {
         File.WriteAllText(_Path, Encript(CurrentData));
-    }
-
-    public async static void SaveAsync()
-    {
-        using (StreamWriter writer = File.CreateText(_Path))
-        {
-            await writer.WriteAsync(Encript(CurrentData));
-        }
     }
 
     public static void Load()

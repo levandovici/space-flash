@@ -59,14 +59,33 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener, IUnity
 
 
 
+    private void OnDestroy()
+    {
+        OnIsAdLoadedChanged = null;
+
+        OnReward = null;
+
+        OnCanShowAdChanged = null;
+    }
+
+
+
     public void InitializeAds()
     {
-        _gameId = (Application.platform == RuntimePlatform.IPhonePlayer) ? _iOsGameId : _androidGameId;
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            _gameId = _androidGameId;
+
+            _adUnitId = _androidAdUnitId;
+        }
+        else
+        {
+            _gameId = _iOsGameId;
+
+            _adUnitId = _iOsAdUnitId;
+        }
 
         Advertisement.Initialize(_gameId, _testMode, _enablePerPlacementMode, this);
-
-        _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer) ? _iOsAdUnitId : _androidAdUnitId;
-
 
         OnIsAdLoadedChanged += (b) =>
         {

@@ -202,18 +202,6 @@ public class GameUI : MonoBehaviour
 
         _privacy_policy.onClick.RemoveAllListeners();
 
-        for (int i = 0; i < 3; i++)
-        {
-            _rotateLeft[i].OnMouseDown -= () => OnDrive.Invoke(Rocket.EDriveParameter.left, true);
-            _rotateLeft[i].OnMouseUp -= () => OnDrive.Invoke(Rocket.EDriveParameter.left, false);
-
-            _rotateRight[i].OnMouseDown -= () => OnDrive.Invoke(Rocket.EDriveParameter.right, true);
-            _rotateRight[i].OnMouseUp -= () => OnDrive.Invoke(Rocket.EDriveParameter.right, false);
-
-            _fly[i].OnMouseDown -= () => OnDrive.Invoke(Rocket.EDriveParameter.fly, true);
-            _fly[i].OnMouseUp -= () => OnDrive.Invoke(Rocket.EDriveParameter.fly, false);
-        }
-
         _sfxSlider.onValueChanged.RemoveAllListeners();
         _musicSlider.onValueChanged.RemoveAllListeners();
 

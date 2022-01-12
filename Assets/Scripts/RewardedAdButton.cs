@@ -41,5 +41,7 @@ public class RewardedAdButton : MonoBehaviour
     void OnDestroy()
     {
         _showAdButton.onClick.RemoveAllListeners();
+
+        OnShowAd = null;
     }
 }
