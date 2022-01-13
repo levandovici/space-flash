@@ -32,7 +32,7 @@ public class Loading : MonoBehaviour
 
 
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(2);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(1);
 
         while(operation.progress < 1f)
         {
