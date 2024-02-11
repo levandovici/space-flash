@@ -8,6 +8,10 @@ using System;
 
 public class GameController : MonoBehaviour
 {
+    private const string PRIVACY_POLICY = "https://limonado-entertainment.jimdosite.com/privacy.policy/";
+
+
+
     [SerializeField]
     private SoundController _soundController;
 
@@ -220,7 +224,7 @@ public class GameController : MonoBehaviour
         {
             _soundController.PlaySfx(SoundController.ESfx.click);
 
-            Application.OpenURL("https://unity3d.com/legal/privacy-policy/");
+            Application.OpenURL(PRIVACY_POLICY);
         };
 
 

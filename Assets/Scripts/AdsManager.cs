@@ -13,9 +13,6 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener, IUnity
     [SerializeField]
     bool _testMode = true;
 
-    [SerializeField]
-    bool _enablePerPlacementMode = true;
-
     private string _gameId;
 
 
@@ -85,7 +82,7 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener, IUnity
             _adUnitId = _iOsAdUnitId;
         }
 
-        Advertisement.Initialize(_gameId, _testMode, _enablePerPlacementMode, this);
+        Advertisement.Initialize(_gameId, _testMode, this);
 
         OnIsAdLoadedChanged += (b) =>
         {
