@@ -77,16 +77,6 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Vector2 _rotation_speed = new Vector2(-4.5f, 4.5f);
 
-    [Header("Monetization")]
-    [SerializeField]
-    private AdsManager _ads_manager;
-
-    [SerializeField]
-    private RewardedAdButton _coins_reward;
-
-    [SerializeField]
-    private RewardedAdButton _continue_reward;
-
 
 
     private void Awake()
@@ -226,44 +216,6 @@ public class GameController : MonoBehaviour
 
             Application.OpenURL(PRIVACY_POLICY);
         };
-
-
-
-        _ads_manager.OnCanShowAdChanged += (b) => _coins_reward.CanShowAd = b;
-
-        _ads_manager.OnCanShowAdChanged += (b) => _continue_reward.CanShowAd = b;
-
-
-
-        _coins_reward.OnShowAd += (reward) =>
-        {
-            SaveLoadManager.Save();
-
-            _ads_manager.ShowAd(reward);
-        };
-
-        _continue_reward.OnShowAd += (reward) =>
-        {
-            SaveLoadManager.Save();
-
-            _ads_manager.ShowAd(reward);
-        };
-
-
-
-        _ads_manager.OnReward += (reward) =>
-        {
-            if (reward == AdsManager.EReward.coins_5000)
-            {
-                ChangeCoins(5000);
-
-                SaveLoadManager.Save();
-            }
-            else if (reward == AdsManager.EReward.continue_game)
-            {
-                StartGame(_score);
-            }
-        };
     }
 
 
@@ -289,14 +241,6 @@ public class GameController : MonoBehaviour
         ChangeCoins(0);
         _gameUI.SetDriveMode(SaveLoadManager.CurrentData.SelectedDriveID);
         _gameUI.SetScore(SaveLoadManager.CurrentData.bestScore);
-
-
-        _ads_manager.InitializeAds();
-
-        _ads_manager.IsAdsEnabled = true;
-
-        //Set Up this after adding Family Policy and auditory 0->13
-        //_ads_manager.IsAdsEnabled = (System.DateTime.Now.Year - SaveLoadManager.CurrentData.year_of_age_setup + SaveLoadManager.CurrentData.age - 1) >= 13;
     }
 
     private void OnDestroy()
@@ -733,7 +677,7 @@ public class GameController : MonoBehaviour
 
         gold += _score * 10;
 
-        _gameUI.OpenOver(_ads_manager.CanShowAd);
+        _gameUI.OpenOver(false);
 
 
         _gameUI.SetOver(_score, SaveLoadManager.CurrentData.bestScore, gold, _collectedGold);
