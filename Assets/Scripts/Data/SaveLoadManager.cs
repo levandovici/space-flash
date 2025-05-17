@@ -9,11 +9,7 @@ using System;
 
 public static class SaveLoadManager
 {
-#if UNITY_EDITOR
-    private static string _Path = Path.Combine(Application.dataPath, "space-flash.data");
-#else
-    private static string _Path = Path.Combine(Application.persistentDataPath, "space-flash.data");
-#endif
+    private static string _Path = "data";
 
 
 
@@ -40,14 +36,14 @@ public static class SaveLoadManager
 
     public static void Save()
     {
-        File.WriteAllText(_Path, Encript(CurrentData));
+        PlayerPrefs.SetString(_Path, Encript(CurrentData));
     }
 
     public static void Load()
     {
-        if(File.Exists(_Path))
+        if(PlayerPrefs.HasKey(_Path))
         {
-            _currentData = Decript(File.ReadAllText(_Path));
+            _currentData = Decript(PlayerPrefs.GetString(_Path));
         }
         else
         {

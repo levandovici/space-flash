@@ -116,11 +116,11 @@ public class Rocket : MonoBehaviour
     {
         if (_gameOver)
         {
-            _rb.velocity = Vector2.zero;
+            _rb.linearVelocity = Vector2.zero;
         }
         else
         {
-            _rb.velocity = (Vector2)transform.up * _moveSpeed + OnCalculateForce();
+            _rb.linearVelocity = (Vector2)transform.up * _moveSpeed + OnCalculateForce();
         }
     }
 
